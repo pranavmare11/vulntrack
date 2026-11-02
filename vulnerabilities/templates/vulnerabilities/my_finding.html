@@ -1,0 +1,174 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Findings | VulnTrack</title>
+
+    <link rel="stylesheet"
+          href="{% static 'vulnerability/CSS/my_finding.css' %}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-left">
+            <div class="logo-mark"></div>
+            <span class="logo-text">VulnTrack</span>
+        </div>
+
+        <div class="nav-links">
+            <a class="nav-link" href="{% url 'explore' %}">
+                Explore
+            </a>
+
+            <a class="nav-link active" href="{% url 'my_finding' %}">
+                My Finding
+            </a>
+
+            <a class="nav-link" href="{% url 'create_post' %}">
+                Create Post
+            </a>
+
+            <a class="nav-link" href="{% url 'profile' %}">
+                Profile
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <header class="header">
+            <h1>My findings</h1>
+
+            <p>
+                Everything you have posted, with the likes and dislikes
+                each finding has received.
+            </p>
+        </header>
+
+        <!-- Statistics -->
+        <section class="summary" aria-label="Your totals">
+
+            <div class="stat">
+                <span class="stat-value" id="totalPosts">
+                    {{ total_posts }}
+                </span>
+
+                <span class="stat-label">
+                    Findings
+                </span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-value likes" id="totalLikes">
+                    {{ total_likes }}
+                </span>
+
+                <span class="stat-label">
+                    Likes
+                </span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-value dislikes" id="totalDislikes">
+                    {{ total_dislikes }}
+                </span>
+
+                <span class="stat-label">
+                    Dislikes
+                </span>
+            </div>
+
+        </section>
+
+        <!-- User Posts -->
+        <section class="posts" id="posts" aria-live="polite">
+
+            {% for post in posts %}
+
+                <article class="post">
+
+                    <!-- Post Header -->
+                    <div class="post-top">
+
+                        <span class="badge">
+                            {{ post.severity|default:"info"|lower }}
+                        </span>
+
+                        <span class="post-date">
+                            {{ post.created_at|date:"j M Y" }}
+                        </span>
+
+                    </div>
+
+                    <!-- Post Title -->
+                    <h2 class="post-title">
+                        <a href="{{ post.get_absolute_url }}">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+
+                    <!-- Post Content -->
+                    <p class="post-excerpt">
+                        {{ post.content|truncatewords:45 }}
+                    </p>
+
+                    <!-- Likes and Dislikes -->
+                    <div class="votes">
+
+                        <span class="vote likes"
+                              aria-label="{{ post.likes_count }} likes">
+
+                            <span class="vote-icon">▲</span>
+
+                            <span class="vote-count">
+                                {{ post.likes_count }}
+                            </span>
+
+                        </span>
+
+                        <span class="vote dislikes"
+                              aria-label="{{ post.dislikes_count }} dislikes">
+
+                            <span class="vote-icon">▼</span>
+
+                            <span class="vote-count">
+                                {{ post.dislikes_count }}
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <!-- Empty State -->
+                <div class="empty">
+
+                    <p>
+                        You have not posted any findings yet.
+                    </p>
+
+                    <a class="btn submit"
+                       href="{% url 'create_post' %}">
+                        Create your first post
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>

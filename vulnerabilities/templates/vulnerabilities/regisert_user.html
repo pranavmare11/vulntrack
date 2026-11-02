@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vulnerability/CSS/register_user.css' %}" />
+    <title>Only Register / Loggedin user can visit</title>
+</head>
+<body>
+    <h1>Sorry but only the Registered / Loggedin </h1>
+
+    <div class="container">
+        <a href="{% url 'register' %}">Register</a>
+        <p>OR</p>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+</body>
+</html>

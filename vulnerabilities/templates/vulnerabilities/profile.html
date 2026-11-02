@@ -1,0 +1,132 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Profile - VulnTrack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+
+    <link
+        rel="stylesheet"
+        href="{% static 'vulnerability/CSS/profile.css' %}"
+    />
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <div class="logo-mark"></div>
+            <span class="logo-text">VulnTrack</span>
+        </div>
+
+        <div class="nav-links">
+            <a class="nav-link" href="{% url 'explore' %}">Explore</a>
+            <a class="nav-link" href="{% url 'my_finding' %}">My Finding</a>
+            <a class="nav-link" href="{% url 'create_post' %}">Create Post</a>
+            <a class="nav-link active" href="{% url 'profile' %}">Profile</a>
+        </div>
+    </nav>
+
+
+    <div class="page">
+
+        <div class="profile-header">
+
+            <!-- PROFILE PICTURE FORM -->
+            <form method="POST" enctype="multipart/form-data" id="avatarForm">
+
+                {% csrf_token %}
+
+                <div class="avatar" id="avatar">
+
+                    {% if user.profile.profile_picture %}
+
+                        <img
+                            id="avatarPreview"
+                            src="{{ user.profile.profile_picture.url }}"
+                            alt="Profile Picture"
+                        >
+
+                    {% else %}
+
+                        <div class="avatar-placeholder">
+                            +
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <input
+                    type="file"
+                    id="avatarInput"
+                    name="profile_picture"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                    style="display: none;"
+                />
+
+            </form>
+
+
+            <!-- USER INFORMATION -->
+            <div class="identity">
+
+                {% if user.is_authenticated %}
+
+                    <h1 id="username">
+                        {{ user.username }}
+                    </h1>
+
+                {% else %}
+
+                    <h1 id="username">
+                        Guest
+                    </h1>
+
+                {% endif %}
+
+
+                <div class="meta">
+
+                    <span>
+                        member since {{ user.date_joined|date:"M Y" }}
+                    </span>
+
+                    <span>
+                        {{ user.email }}
+                    </span>
+
+                </div>
+
+
+                <p class="bio" id="bio">
+                    {{ user.profile.bio|default:"No bio yet." }}
+                </p>
+
+                <a href="{% url 'create_post' %}">
+                    <button class="btn">
+                        Create Post
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="{% static 'vulnerability/JS/profile.js' %}"></script>
+
+</body>
+</html>

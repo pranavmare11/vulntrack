@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VulnTrack</title>
+
+    <link rel="stylesheet" href="{% static 'vulnerability/CSS/style.css' %}" />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="logo">VulnTrack</div>
+      <a href="{% url 'regisert_user' %}">Home</a>
+      <a href="{% url 'regisert_user' %}">Explore</a>
+      <a href="{% url 'regisert_user' %}">My Finding</a>
+      <a href="{% url 'regisert_user' %}">Create Post</a>
+      <a href="{% url 'regisert_user' %}">Profile</a>
+    </nav>
+
+    <section class="hreo">
+      <div class="hero-content">
+        <h1>Track what you find. share what you know</h1>
+        <p>
+          VulnTrack pairs a private vulnerability tracker for your authorized
+          testing and lab work with a public knowledge base where the security
+          community shares write-ups, techniques, and lessons learned.
+        </p>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="{% url 'register' %}" class="btn-primary">Get Started</a>
+        <a href="{% url 'register' %}" class="btn-secondary">Learn More</a>
+      </div>
+    </section>
+  </body>
+</html>

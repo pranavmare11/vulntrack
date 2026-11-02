@@ -1,0 +1,79 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explore - VulnTrack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{% static 'vulnerability/CSS/explore.css' %}" />
+</head>
+
+<body class="explore-page">
+    <nav class="nav">
+        <a class="nav-brand" href="{% url 'explore' %}">
+            <span class="logo-mark" aria-hidden="true"></span>
+            <span class="logo-text">VulnTrack</span>
+        </a>
+
+        <div class="nav-links">
+            <a class="nav-link active" href="{% url 'explore' %}">Explore</a>
+            <a class="nav-link" href="{% url 'my_finding' %}">My Finding</a>
+            <a class="nav-link" href="{% url 'create_post' %}">Create Post</a>
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <header class="page-heading">
+            <span class="eyebrow">COMMUNITY FINDINGS</span>
+            <h1>Explore</h1>
+            <p>Research, write-ups, and security findings from the community.</p>
+        </header>
+
+        <section class="post-list" aria-label="Community posts">
+            {% for post in posts %}
+            <article class="post-entry">
+
+                <div class="post-copy">
+                    <h2>
+                        <a href="{% url 'post_detail' post.pk %}">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+
+                    <p class="post-meta">
+                        by {{ post.author }}
+                        <span>·</span>
+                        {{ post.created_at|date:"M d, Y" }}
+                    </p>
+
+                    <p class="post-excerpt">
+                        {{ post.content|striptags|truncatewords:35 }}
+                    </p>
+
+                    <p class="post-stats" aria-label="Post reactions and comments">
+                        <span>↑ {{ post.likes_count }}</span>
+                        <span>↓ {{ post.dislikes_count }}</span>
+                        <span>COMMENTS {{ post.comments.count }}</span>
+                    </p>
+                </div>
+
+                <a class="read-more"
+                   href="{% url 'post_detail' post.pk %}"
+                   aria-label="Read {{ post.title }}">
+                    Read post <span aria-hidden="true">→</span>
+                </a>
+
+            </article>
+            {% empty %}
+            <p class="empty-state">No posts yet. Be the first to share a finding!</p>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>

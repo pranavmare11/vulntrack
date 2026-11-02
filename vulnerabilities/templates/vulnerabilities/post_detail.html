@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ post.title }} - VulnTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'vulnerability/CSS/post_detail.css' %}" />
+  </head>
+  <body class="post-detail-page">
+    <nav class="nav">
+      <a class="nav-brand" href="{% url 'explore' %}">
+        <span class="logo-mark" aria-hidden="true"></span>
+        <span class="logo-text">VulnTrack</span>
+      </a>
+      <a class="nav-link" href="{% url 'explore' %}">Explore</a>
+    </nav>
+
+    <main class="page">
+      <a class="back-link" href="{% url 'explore' %}">← Back to Explore</a>
+
+      <article class="post-article">
+        <header class="post-header">
+          <span class="eyebrow">COMMUNITY FINDING</span>
+          <h1>{{ post.title }}</h1>
+          <p class="post-meta">by {{ post.author }} <span>·</span> {{ post.created_at|date:"M d, Y" }}</p>
+        </header>
+        <div class="post-content">{{ post.content|linebreaks }}</div>
+
+        <div class="reactions" aria-label="Post reactions">
+          <form method="post" action="{% url 'react' post.pk 'like' %}">
+            {% csrf_token %}
+            <button class="reaction-button{% if user_reaction == 1 %} is-active{% endif %}" type="submit" aria-pressed="{% if user_reaction == 1 %}true{% else %}false{% endif %}">
+              <span aria-hidden="true">↑</span> Like <span class="reaction-count">{{ post.likes_count }}</span>
+            </button>
+          </form>
+          <form method="post" action="{% url 'react' post.pk 'dislike' %}">
+            {% csrf_token %}
+            <button class="reaction-button{% if user_reaction == -1 %} is-active{% endif %}" type="submit" aria-pressed="{% if user_reaction == -1 %}true{% else %}false{% endif %}">
+              <span aria-hidden="true">↓</span> Dislike <span class="reaction-count">{{ post.dislikes_count }}</span>
+            </button>
+          </form>
+        </div>
+      </article>
+
+      <section class="comments-section" aria-labelledby="comments-title">
+        <h2 id="comments-title">Comments <span>({{ comments|length }})</span></h2>
+        {% if user.is_authenticated %}
+        <form class="comment-form" method="post">
+          {% csrf_token %}
+          {{ form.text }}
+          <button class="submit-button" type="submit">Post comment <span aria-hidden="true">→</span></button>
+        </form>
+        {% else %}
+        <p class="login-prompt"><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to like or comment.</p>
+        {% endif %}
+
+        <div class="comment-list">
+          {% for c in comments %}
+          <article class="comment">
+            <div class="comment-meta"><strong>{{ c.author }}</strong><span>{{ c.created_at|timesince }} ago</span></div>
+            <p>{{ c.text|linebreaksbr }}</p>
+          </article>
+          {% empty %}
+          <p class="empty-state">No comments yet. Be the first!</p>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

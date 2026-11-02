@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'vulnerability/CSS/create_post.css' %}" />
+    <title>create a Post</title>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <div class="logo-mark"></div>
+            <span class="logo-text">VulnTrack</span>
+        </div>
+
+        <div class="nav-links">
+            <a class="nav-link" href="{% url 'explore' %}">Explore</a>
+            <a class="nav-link" href="{% url 'my_finding' %}">My Finding</a>
+            <a class="nav-link active" href="{% url 'create_post' %}">Create Post</a>
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Create Post</h1>
+            <p>Share your knowledge, project, writeups or security research</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <lable for="title">Post Title</label>
+
+                <input type="text" id="title" name="title" placeholder="Enter post title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Post Content</label>
+
+                <select id="categoty" name="category">
+                    <option value="">Select a Categoty</option>
+                    <option value="web-security">Web Security</option>
+                    <option value="bug-bounty">Bug Bounty</option>
+                    <option value="networking">Networking</option>
+                    <option value="soc">Soc</option>
+                    <option value="linux">Linux</option>
+                    <option value="programming">Programming</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <lable for="content">Content</lable>
+
+                <textarea id="content" name="content" placeholder="Enter post content" required></textarea>
+            </div>
+
+            <div class="action">
+                <button type="button" class="btn cancel">
+                    Cancel
+                </button>
+
+                <button type="submit" class="btn submit">
+                    Publish Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
